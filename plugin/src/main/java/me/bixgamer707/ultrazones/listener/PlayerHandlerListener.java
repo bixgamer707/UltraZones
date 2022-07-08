@@ -6,9 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
-public class UserListeners implements Listener {
+public class PlayerHandlerListener implements Listener {
     private final UltraZones plugin;
-    public UserListeners(UltraZones plugin){
+    public PlayerHandlerListener(UltraZones plugin){
         this.plugin = plugin;
     }
 

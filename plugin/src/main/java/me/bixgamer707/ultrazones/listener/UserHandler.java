@@ -17,7 +17,9 @@ public class UserHandler implements Listener {
 
     @EventHandler
     public void onLeftRegion(RegionLeftEvent event){
-        User user = plugin.getUsersManager().getUserByUuid(event.getUUID());
+        if(event.getPlayer() == null)return;
+
+        User user = plugin.getUsersManager().getUserByUuid(event.getPlayer().getUniqueId());
         if(user==null)return;
 
         user.onRegionLeft(event);
@@ -25,7 +27,9 @@ public class UserHandler implements Listener {
 
     @EventHandler
     public void onLeftRegions(RegionsLeftEvent event){
-        User user = plugin.getUsersManager().getUserByUuid(event.getUUID());
+        if(event.getPlayer() == null)return;
+
+        User user = plugin.getUsersManager().getUserByUuid(event.getPlayer().getUniqueId());
         if(user==null)return;
 
         user.onRegionsLeft(event);
@@ -33,7 +37,9 @@ public class UserHandler implements Listener {
 
     @EventHandler
     public void onJoinRegion(RegionEnteredEvent event){
-        User user = plugin.getUsersManager().getUserByUuid(event.getUUID());
+        if(event.getPlayer() == null)return;
+
+        User user = plugin.getUsersManager().getUserByUuid(event.getPlayer().getUniqueId());
         if(user==null)return;
 
         user.onRegionJoin(event);
@@ -41,7 +47,9 @@ public class UserHandler implements Listener {
 
     @EventHandler
     public void onJoinRegions(RegionsEnteredEvent event){
-        User user = plugin.getUsersManager().getUserByUuid(event.getUUID());
+        if(event.getPlayer() == null)return;
+
+        User user = plugin.getUsersManager().getUserByUuid(event.getPlayer().getUniqueId());
         if(user==null)return;
 
         user.onRegionsJoin(event);

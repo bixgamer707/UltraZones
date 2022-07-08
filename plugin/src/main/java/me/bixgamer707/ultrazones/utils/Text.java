@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 public class Text {
     public static String hexColors(String text) {
-        Pattern HEX_PATTERN = Pattern.compile(UltraZones.getInstance().getFileManager().getConfig().getString("Settings.rgb-color"));
+        Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
         if (Bukkit.getVersion().contains("1.16")) {
             Matcher match = HEX_PATTERN.matcher(text);
             while (match.find()) {
@@ -48,39 +48,43 @@ public class Text {
                 new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
 
         return hexColors(messages.getString(path).replaceAll(
-                "%prefix%",config.getString("Prefix")
+                "%prefix%", config.getString("Prefix")
         ));
     }
 
     public static void colorizeList(CommandSender player, String path){
         File config = UltraZones.getInstance().getFileManager().getConfig();
         File messages = new File(UltraZones.getInstance(),config.getString("Language"),
-                new java.io.File(UltraZones.getInstance().getDataFolder().getAbsolutePath() + "/lang/"));
+                new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
 
         if(player instanceof Player){
             List<String> list = messages.getStringList(path);
             StringBuilder message = new StringBuilder();
-            for(int i=0;i<list.size();i++){
-                message.append(sanitizeString((Player) player,list.get(i)));
+            for (String s : list) {
+                message.append(sanitizeString((Player) player, s));
             }
-            player.sendMessage(message.toString());
+            player.sendMessage(message.toString().replaceAll(
+                    "%prefix%", config.getString("Prefix")
+            ));
             return;
         }
         List<String> list = messages.getStringList(path);
         for(String text : list){
-            UltraZones.getInstance().getLogger().info(text);
+            UltraZones.getInstance().getLogger().info(text.replaceAll(
+                    "%prefix%", config.getString("Prefix")
+            ));
         }
     }
 
     public static void colorizeList(Player player, String path){
         File config = UltraZones.getInstance().getFileManager().getConfig();
         File messages = new File(UltraZones.getInstance(),config.getString("Language"),
-                new java.io.File(UltraZones.getInstance().getDataFolder().getAbsolutePath() + "/lang/"));
+                new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
 
         List<String> list = messages.getStringList(path);
         StringBuilder message = new StringBuilder();
-        for(int i=0;i<list.size();i++){
-            message.append(sanitizeString((Player) player,list.get(i)));
+        for (String s : list) {
+            message.append(sanitizeString(player, s));
         }
         player.sendMessage(message.toString());
     }

@@ -24,7 +24,6 @@ public abstract class UserData {
 
     public abstract void onRegionsLeft(RegionsLeftEvent event);
 
-    protected StringBuilder regionId;
 
     public UUID getUniqueId() {
         return uuid;
@@ -34,11 +33,4 @@ public abstract class UserData {
         return name;
     }
 
-    public StringBuilder getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(StringBuilder regionId) {
-        this.regionId = regionId;
-    }
 }

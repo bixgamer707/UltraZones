@@ -3,11 +3,10 @@ package me.bixgamer707.ultrazones.register;
 import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.commands.MainCommand;
 import me.bixgamer707.ultrazones.listener.UserHandler;
-import me.bixgamer707.ultrazones.listener.UserListeners;
+import me.bixgamer707.ultrazones.listener.PlayerHandlerListener;
 import me.bixgamer707.ultrazones.tabcomplete.OldPaperTabCompleter;
 import me.bixgamer707.ultrazones.tabcomplete.PaperTabCompleter;
 import me.bixgamer707.ultrazones.tabcomplete.SpigotTabCompleter;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 public class RegisterPlugin {
@@ -18,7 +17,7 @@ public class RegisterPlugin {
 
     public void registerListener(Listener... listeners){
         for(Listener listener : listeners){
-            Bukkit.getPluginManager().registerEvents(listener,plugin);
+            plugin.getServer().getPluginManager().registerEvents(listener,plugin);
         }
     }
 
@@ -53,7 +52,7 @@ public class RegisterPlugin {
         registerCommand();
         registerListener(
             new UserHandler(plugin),
-                new UserListeners(plugin)
+                new PlayerHandlerListener(plugin)
         );
         registerTabCompletion();
     }
