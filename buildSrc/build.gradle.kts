@@ -8,6 +8,6 @@ repositories {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "${findProperty("java")}"
+        kotlinOptions.jvmTarget = "8"
     }
 }

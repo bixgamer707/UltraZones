@@ -1,1 +1,3 @@
-rootProject.name = "plugin-template"
+rootProject.name = "UltraZones"
+
+include("plugin","api")

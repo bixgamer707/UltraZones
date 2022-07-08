@@ -1,0 +1,9 @@
+name: UltraZones
+main: me.bixgamer707.ultrazones.Main
+authors: [ bixgamer707 ]
+version: v1.0
+api-version: "1.13"
+softdepend: [ PlaceholderAPI, UltraBreeds, WorldGuard, WorldEdit ]
+
+
+

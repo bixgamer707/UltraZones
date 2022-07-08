@@ -1,0 +1,13 @@
+
+
+help-message:
+  - "&8&m+--------------------------------+"
+  - "&7/&9uz &dreload &0| &bRecarga los archivos de config"
+  - "&7/&9uz &dhelp &0| &bRecibe ayuda"
+  - "&7/&9uz"
+  - "&7/&9uz"
+  - "&7/&9uz"
+  - "&8&m+--------------------------------+"
+
+no-permission: "%prefix% &cNo puedes hacer eso."
+reload-message: "%prefix% &aHas recargado todos los archivos de Configuracion correctamente."
