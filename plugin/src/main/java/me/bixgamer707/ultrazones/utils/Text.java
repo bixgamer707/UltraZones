@@ -1,8 +1,8 @@
 package me.bixgamer707.ultrazones.utils;
 
 import com.google.common.base.Strings;
-import me.bixgamer707.ultrazones.Main;
-import me.bixgamer707.ultrazones.file.FileCreator;
+import me.bixgamer707.ultrazones.UltraZones;
+import me.bixgamer707.ultrazones.file.File;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.regex.Pattern;
 
 public class Text {
     public static String hexColors(String text) {
-        Pattern HEX_PATTERN = Pattern.compile(Main.getInstance().getFileManager().getConfig().getString("Settings.rgb-color"));
+        Pattern HEX_PATTERN = Pattern.compile(UltraZones.getInstance().getFileManager().getConfig().getString("Settings.rgb-color"));
         if (Bukkit.getVersion().contains("1.16")) {
             Matcher match = HEX_PATTERN.matcher(text);
             while (match.find()) {
@@ -33,7 +32,7 @@ public class Text {
     }
 
     public static String sanitizeString(Player player, String text) {
-        if (Main.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (UltraZones.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             return hexColors(PlaceholderAPI.setPlaceholders(player, text));
 
         } else {
@@ -42,10 +41,11 @@ public class Text {
     }
 
     public static String colorize(String path){
-        FileCreator config = Main.getInstance().getFileManager().getConfig();
+        File config = UltraZones.getInstance().getFileManager().getConfig();
         if(config == null)return hexColors("&7Config.yml is null!");
 
-        FileCreator messages = new FileCreator(Main.getInstance(),config.getString("Language"),new File(Main.getInstance().getDataFolder().getAbsolutePath() + "/lang/"));
+        File messages = new File(UltraZones.getInstance(),config.getString("Language"),
+                new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
 
         return hexColors(messages.getString(path).replaceAll(
                 "%prefix%",config.getString("Prefix")
@@ -53,9 +53,9 @@ public class Text {
     }
 
     public static void colorizeList(CommandSender player, String path){
-        FileCreator config = Main.getInstance().getFileManager().getConfig();
-        FileCreator messages = new FileCreator(Main.getInstance(),config.getString("Language"),
-                new File(Main.getInstance().getDataFolder().getAbsolutePath() + "/lang/"));
+        File config = UltraZones.getInstance().getFileManager().getConfig();
+        File messages = new File(UltraZones.getInstance(),config.getString("Language"),
+                new java.io.File(UltraZones.getInstance().getDataFolder().getAbsolutePath() + "/lang/"));
 
         if(player instanceof Player){
             List<String> list = messages.getStringList(path);
@@ -68,14 +68,14 @@ public class Text {
         }
         List<String> list = messages.getStringList(path);
         for(String text : list){
-            Main.getInstance().getLogger().info(text);
+            UltraZones.getInstance().getLogger().info(text);
         }
     }
 
     public static void colorizeList(Player player, String path){
-        FileCreator config = Main.getInstance().getFileManager().getConfig();
-        FileCreator messages = new FileCreator(Main.getInstance(),config.getString("Language"),
-                new File(Main.getInstance().getDataFolder().getAbsolutePath() + "/lang/"));
+        File config = UltraZones.getInstance().getFileManager().getConfig();
+        File messages = new File(UltraZones.getInstance(),config.getString("Language"),
+                new java.io.File(UltraZones.getInstance().getDataFolder().getAbsolutePath() + "/lang/"));
 
         List<String> list = messages.getStringList(path);
         StringBuilder message = new StringBuilder();
@@ -91,14 +91,14 @@ public class Text {
         if(Utils.versionEquals("1.9","1.10","1.11","1.12","1.13","1.14","1.15","1.16","1.17","1.18","1.19")){
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(hexColors(message)));
         }else{
-            String nmsver = Main.getInstance().getNmsVer();
+            String nmsver = UltraZones.getInstance().getNmsVer();
             try {
                 Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
                 Object craftPlayer = craftPlayerClass.cast(player);
                 Object packet;
                 Class<?> packetPlayOutChatClass = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
                 Class<?> packetClass = Class.forName("net.minecraft.server." + nmsver + ".Packet");
-                if (Main.getInstance().isUseOldMethods()) {
+                if (UltraZones.getInstance().isUseOldMethods()) {
                     Class<?> chatSerializerClass = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
                     Class<?> iChatBaseComponentClass = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
                     Method m3 = chatSerializerClass.getDeclaredMethod("a", String.class);

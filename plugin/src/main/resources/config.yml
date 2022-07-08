@@ -1,2 +1,35 @@
 Prefix: "&9Ultra&bZones &8&l| "
 Language: messages_EN.yml
+
+Zones:
+  spawn:
+    placerholder:
+      enable: true
+      placeholder: "zone_player"
+      replacer: "&8&l| &aSPAWN &8&L|"
+    join:
+      execute-commands:
+        - "broadcast &8> &a+ &8< &7%player%"
+      sounds:
+        to-server:
+          - BLOCK_NOTE_BLOCK_PLING;10;2
+        player:
+          - BLOCK_NOTE_BLOCK_PLING;10;0.
+      messages:
+        action-bar:
+          enable: true
+          message: "&aYou has been join in the spawn"
+        message: "&aYou has been join in the spawn"
+    left:
+      execute-commands:
+        - "broadcast &8> &a+ &8< &7%player%"
+      sounds:
+        to-server:
+          - BLOCK_NOTE_BLOCK_PLING;10;2
+        player:
+          - BLOCK_NOTE_BLOCK_PLING;10;0.
+      messages:
+        action-bar:
+          enable: true
+          message: "&aYou has been join in the spawn"
+        message: "&aYou has been join in the spawn"

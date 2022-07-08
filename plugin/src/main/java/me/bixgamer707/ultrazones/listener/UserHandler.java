@@ -1,6 +1,6 @@
 package me.bixgamer707.ultrazones.listener;
 
-import me.bixgamer707.ultrazones.Main;
+import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.user.User;
 import me.bixgamer707.ultrazones.wgevents.events.RegionEnteredEvent;
 import me.bixgamer707.ultrazones.wgevents.events.RegionLeftEvent;
@@ -10,8 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class UserHandler implements Listener {
-    private final Main plugin;
-    public UserHandler(Main plugin){
+    private final UltraZones plugin;
+    public UserHandler(UltraZones plugin){
         this.plugin = plugin;
     }
 

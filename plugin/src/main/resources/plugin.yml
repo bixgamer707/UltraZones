@@ -1,9 +1,14 @@
 name: UltraZones
-main: me.bixgamer707.ultrazones.Main
+main: me.bixgamer707.ultrazones.UltraZones
 authors: [ bixgamer707 ]
 version: v1.0
 api-version: "1.13"
 softdepend: [ PlaceholderAPI, UltraBreeds, WorldGuard, WorldEdit ]
+
+commands:
+  ultrazones:
+    description: Main command for UltraZones
+    aliases: [uz,ultrazone]
 
 
 

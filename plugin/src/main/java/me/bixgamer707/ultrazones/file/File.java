@@ -1,24 +1,23 @@
 package me.bixgamer707.ultrazones.file;
 
-import me.bixgamer707.ultrazones.Main;
+import me.bixgamer707.ultrazones.UltraZones;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class FileCreator extends YamlConfiguration {
+public class File extends YamlConfiguration {
 
     private final String fileName;
 
-    private final Main plugin;
+    private final UltraZones plugin;
 
-    private File file;
+    private java.io.File file;
 
-    private final File folder;
+    private final java.io.File folder;
 
-    public FileCreator(Main plugin, String fileName, File folder) {
+    public File(UltraZones plugin, String fileName, java.io.File folder) {
         this.folder = folder;
         this.plugin = plugin;
         this.fileName = fileName + (fileName.endsWith(".yml") ? "" : ".yml");
@@ -26,13 +25,13 @@ public class FileCreator extends YamlConfiguration {
 
     }
 
-    public FileCreator(Main plugin, String fileName) {
+    public File(UltraZones plugin, String fileName) {
         this(plugin, fileName, plugin.getDataFolder());
     }
 
     private void createFile() {
         try {
-            file = new File(this.folder, this.fileName);
+            file = new java.io.File(this.folder, this.fileName);
             if (file.exists()) {
                 load(file);
                 save(file);
@@ -40,7 +39,7 @@ public class FileCreator extends YamlConfiguration {
             }
             if (this.plugin.getResource(this.fileName) != null) {
                 this.plugin.saveResource(this.fileName, false);
-            }else {
+            } else {
                 save(file);
             }
             load(file);

@@ -1,16 +1,16 @@
 package me.bixgamer707.ultrazones;
 
 import com.sk89q.worldguard.WorldGuard;
-import me.bixgamer707.ultrazones.file.FileManager;
+import me.bixgamer707.ultrazones.manager.FileManager;
 import me.bixgamer707.ultrazones.manager.UsersManager;
 import me.bixgamer707.ultrazones.register.RegisterPlugin;
 import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin {
+public class UltraZones extends JavaPlugin {
 
-    private static Main instance;
+    private static UltraZones instance;
     private FileManager fileManager;
     public String nmsVer;
     private boolean useOldMethods = false;
@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
     }
 
 
-    public static Main getInstance() {
+    public static UltraZones getInstance() {
         return instance;
     }
 
