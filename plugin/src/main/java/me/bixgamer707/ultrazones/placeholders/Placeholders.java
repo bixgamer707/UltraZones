@@ -2,7 +2,6 @@ package me.bixgamer707.ultrazones.placeholders;
 
 import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.file.File;
-import me.bixgamer707.ultrazones.user.User;
 import me.bixgamer707.ultrazones.utils.Text;
 import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -45,9 +44,6 @@ public class Placeholders extends PlaceholderExpansion {
         }
 
         if (identifier.equals("zone_player")) {
-            User user = plugin.getUsersManager().getUserByUuid(player.getUniqueId());
-            if(user == null) return "";
-
             File config = plugin.getFileManager().getConfig();
             if(!config.contains("Zones"))
 
@@ -66,9 +62,6 @@ public class Placeholders extends PlaceholderExpansion {
 
                     return Text.sanitizeString(player, config.getString(path.append(".placeholder.replacer").toString()));
                 }
-
-//List one: spawn, shop
-                //List two: shop, spawn
             }
             return "";
         }

@@ -1,6 +1,4 @@
 Prefix: "&9Ultra&bZones &8&l| "
-Language: messages_EN.yml
-
 
 Player-no-region: "&c&lWORLD"
 
@@ -14,24 +12,54 @@ Zones:
         - "broadcast &8> &a+ &8< &7%player%"
       sounds:
         to-server:
-          - BLOCK_NOTE_BLOCK_PLING;10;2
+          - BLOCK_NOTE_BLOCK_PLING:10:2
         player:
-          - BLOCK_NOTE_BLOCK_PLING;10;0.
+          - BLOCK_NOTE_BLOCK_PLING:10:0.5
       messages:
         action-bar:
           enable: true
           message: "&aYou has been join in the spawn"
         message: "&aYou has been join in the spawn"
+      permission-requirement:
+        enable: false
+        value: "zone.spawn.join"
+        message-no-available: "%prefix% &cYou don't join a this zone."
     left:
+      permission-requirement:
+        enable: false
+        value: "zone.spawn.exit"
+        message-no-available: "%prefix% &cYou don't exit this zone."
       execute-commands:
-        - "broadcast &8> &a+ &8< &7%player%"
+        - "broadcast &8> &c- &8< &7%player%"
       sounds:
         to-server:
-          - BLOCK_NOTE_BLOCK_PLING;10;2
+          - BLOCK_NOTE_BLOCK_PLING:10:2
         player:
-          - BLOCK_NOTE_BLOCK_PLING;10;0.
+          - BLOCK_NOTE_BLOCK_PLING:10:0.5
       messages:
         action-bar:
           enable: true
           message: "&aYou has been join in the spawn"
         message: "&aYou has been join in the spawn"
+
+#MESSAGES IN ENGLISH
+Messages:
+    help-message:
+    - "&8&m+--------------------------------+"
+    - "&7/&9uz &dreload &0| &bReload config files."
+    - "&7/&9uz &dhelp &0| &bReceive help."
+    - "&8&m+--------------------------------+"
+
+    no-permission: "%prefix% &cYou can't do that."
+    reload-message: "%prefix% &aYou have reloaded all the configuration files correctly."
+
+#MESSAGES IN SPANISH
+#Messages:
+  #help-message:
+    #- "&8&m+--------------------------------+"
+    #- "&7/&9uz &dreload &0| &bRecarga los archivos de config."
+    #- "&7/&9uz &dhelp &0| &bRecibe ayuda."
+    #- "&8&m+--------------------------------+"
+
+  #no-permission: "%prefix% &cNo puedes hacer eso."
+  #reload-message: "%prefix% &aHas recargado todos los archivos de Configuracion correctamente."

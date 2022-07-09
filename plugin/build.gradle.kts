@@ -12,8 +12,8 @@ dependencies {
     api(project(":api"))
     compileOnly(libs.spigot)
     compileOnly(libs.placeholder)
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.3")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.5")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.5")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.8")
 }
 
 tasks {

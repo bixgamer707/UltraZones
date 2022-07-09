@@ -11,7 +11,7 @@ public class FileManager {
         this.plugin = plugin;
     }
 
-    private File config,messages_ES,messages_EN,saves;
+    private File config,messages_ES,messages_EN,saves,breeds;
     private StringBuilder langFolder;
     
     public void registerFiles() {
@@ -19,6 +19,9 @@ public class FileManager {
         config = new File(plugin,"config.yml");
         messages_ES = new File(plugin, "messages_ES.yml",new java.io.File(langFolder.toString()));
         messages_EN = new File(plugin, "messages_EN.yml", new java.io.File(langFolder.toString()));
+        if(plugin.getServer().getPluginManager().getPlugin("UltraBreeds") != null){
+            breeds = new File(plugin, "breeds.yml");
+        }
         saves = new File(plugin, "saves.yml");
         plugin.getLogger().info(
                 Text.hexColors("&aFiles registered...")
@@ -43,5 +46,9 @@ public class FileManager {
 
     public StringBuilder getLangFolder() {
         return langFolder;
+    }
+
+    public File getBreeds() {
+        return breeds;
     }
 }

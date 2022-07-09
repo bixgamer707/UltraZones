@@ -4,6 +4,8 @@ import com.sk89q.worldguard.WorldGuard;
 import me.bixgamer707.ultrazones.manager.FileManager;
 import me.bixgamer707.ultrazones.manager.UsersManager;
 import me.bixgamer707.ultrazones.register.RegisterPlugin;
+import me.bixgamer707.ultrazones.utils.Text;
+import me.bixgamer707.ultrazones.wgevents.Entry;
 import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,6 +33,15 @@ public class UltraZones extends JavaPlugin {
         usersManager = new UsersManager(this);
 
         //REGISTER FUNCTIONS
+        if (!WorldGuard.getInstance().getPlatform().getSessionManager().registerHandler(Entry.factory, null)) {
+            Text.sendMsgConsole(
+                    "&cCould not register the entry handler!",
+                    "&ePlease report this error. &4The plugin will now be disabled."
+            );
+
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         registerPlugin.registerAll();
         fileManager.registerFiles();
     }

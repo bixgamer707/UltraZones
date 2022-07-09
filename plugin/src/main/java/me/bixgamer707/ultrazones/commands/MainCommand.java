@@ -43,6 +43,19 @@ public class MainCommand implements CommandExecutor {
             Text.colorizeList(player,"help-message");
             return true;
         }
-        return false;
+        if(!(args.length > 0)){
+            Text.colorizeList(sender,"help-message");
+            return false;
+        }
+        if("reload".equalsIgnoreCase(args[0])){
+            config.reload();
+            messagesEN.reload();
+            messagesES.reload();
+            saves.reload();
+            plugin.getLogger().info(Text.colorize("reload-message"));
+            return true;
+        }
+        Text.colorizeList(sender,"help-message");
+        return true;
     }
 }

@@ -19,6 +19,9 @@ import java.util.regex.Pattern;
 
 public class Text {
     public static String hexColors(String text) {
+        File config = UltraZones.getInstance().getFileManager().getConfig();
+        text = text.replaceAll(
+                "%prefix%", config.getString("Prefix"));
         Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
         if (Bukkit.getVersion().contains("1.16")) {
             Matcher match = HEX_PATTERN.matcher(text);
@@ -47,9 +50,13 @@ public class Text {
         File messages = new File(UltraZones.getInstance(),config.getString("Language"),
                 new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
 
-        return hexColors(messages.getString(path).replaceAll(
-                "%prefix%", config.getString("Prefix")
-        ));
+        return hexColors(messages.getString(path));
+    }
+
+    public static void sendMsgConsole(String... msg){
+        for(String txt : msg){
+            UltraZones.getInstance().getLogger().info(txt);
+        }
     }
 
     public static void colorizeList(CommandSender player, String path){
@@ -61,18 +68,14 @@ public class Text {
             List<String> list = messages.getStringList(path);
             StringBuilder message = new StringBuilder();
             for (String s : list) {
-                message.append(sanitizeString((Player) player, s));
+                message.append(sanitizeString((Player) player, s)).append("\n");
             }
-            player.sendMessage(message.toString().replaceAll(
-                    "%prefix%", config.getString("Prefix")
-            ));
+            player.sendMessage(Text.hexColors(message.toString()));
             return;
         }
         List<String> list = messages.getStringList(path);
         for(String text : list){
-            UltraZones.getInstance().getLogger().info(text.replaceAll(
-                    "%prefix%", config.getString("Prefix")
-            ));
+            UltraZones.getInstance().getLogger().info(hexColors(text));
         }
     }
 
@@ -86,7 +89,7 @@ public class Text {
         for (String s : list) {
             message.append(sanitizeString(player, s));
         }
-        player.sendMessage(message.toString());
+        player.sendMessage(hexColors(message.toString()));
     }
 
     public static void sendActionBar(Player player, String message) {
@@ -137,11 +140,5 @@ public class Text {
                 e.printStackTrace();
             }
         }
-    }
-    public static String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor, String notCompletedColor) {
-        float percent = (float) current/max;
-        int progressBars = (int) (totalBars * percent);
-
-        return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 }
