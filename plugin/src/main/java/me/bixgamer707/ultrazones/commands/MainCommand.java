@@ -19,8 +19,6 @@ public class MainCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         File config = plugin.getFileManager().getConfig();
-        File messagesES = plugin.getFileManager().getMessages_ES();
-        File messagesEN = plugin.getFileManager().getMessages_EN();
         File saves = plugin.getFileManager().getSaves();
         if(sender instanceof Player){
             Player player = (Player) sender;
@@ -34,8 +32,6 @@ public class MainCommand implements CommandExecutor {
                     return false;
                 }
                 config.reload();
-                messagesEN.reload();
-                messagesES.reload();
                 saves.reload();
                 player.sendMessage(Text.colorize("reload-message"));
                 return true;
@@ -49,8 +45,6 @@ public class MainCommand implements CommandExecutor {
         }
         if("reload".equalsIgnoreCase(args[0])){
             config.reload();
-            messagesEN.reload();
-            messagesES.reload();
             saves.reload();
             plugin.getLogger().info(Text.colorize("reload-message"));
             return true;

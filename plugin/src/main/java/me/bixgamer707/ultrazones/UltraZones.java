@@ -51,6 +51,7 @@ public class UltraZones extends JavaPlugin {
         instance = null;
         fileManager = null;
         registerPlugin = null;
+        usersManager = null;
         nmsVer = null;
     }
 

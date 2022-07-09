@@ -1,6 +1,5 @@
 package me.bixgamer707.ultrazones.utils;
 
-import com.google.common.base.Strings;
 import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.file.File;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -45,12 +44,8 @@ public class Text {
 
     public static String colorize(String path){
         File config = UltraZones.getInstance().getFileManager().getConfig();
-        if(config == null)return hexColors("&7Config.yml is null!");
 
-        File messages = new File(UltraZones.getInstance(),config.getString("Language"),
-                new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
-
-        return hexColors(messages.getString(path));
+        return hexColors(config.getString(path));
     }
 
     public static void sendMsgConsole(String... msg){
@@ -61,11 +56,9 @@ public class Text {
 
     public static void colorizeList(CommandSender player, String path){
         File config = UltraZones.getInstance().getFileManager().getConfig();
-        File messages = new File(UltraZones.getInstance(),config.getString("Language"),
-                new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
 
         if(player instanceof Player){
-            List<String> list = messages.getStringList(path);
+            List<String> list = config.getStringList(path);
             StringBuilder message = new StringBuilder();
             for (String s : list) {
                 message.append(sanitizeString((Player) player, s)).append("\n");
@@ -73,7 +66,7 @@ public class Text {
             player.sendMessage(Text.hexColors(message.toString()));
             return;
         }
-        List<String> list = messages.getStringList(path);
+        List<String> list = config.getStringList(path);
         for(String text : list){
             UltraZones.getInstance().getLogger().info(hexColors(text));
         }
@@ -81,10 +74,8 @@ public class Text {
 
     public static void colorizeList(Player player, String path){
         File config = UltraZones.getInstance().getFileManager().getConfig();
-        File messages = new File(UltraZones.getInstance(),config.getString("Language"),
-                new java.io.File(UltraZones.getInstance().getFileManager().getLangFolder().toString()));
 
-        List<String> list = messages.getStringList(path);
+        List<String> list = config.getStringList(path);
         StringBuilder message = new StringBuilder();
         for (String s : list) {
             message.append(sanitizeString(player, s));
