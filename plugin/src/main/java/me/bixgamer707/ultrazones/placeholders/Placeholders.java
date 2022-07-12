@@ -45,7 +45,7 @@ public class Placeholders extends PlaceholderExpansion {
 
         if (identifier.equals("zone_player")) {
             File config = plugin.getFileManager().getConfig();
-            if(!config.contains("Zones"))
+            if(!config.contains("Zones"))return "Nothing zones registered";
 
             for(String idRegion : WorldGuardChecks.getRegionsNames(player.getUniqueId())){
                 if(WorldGuardChecks.getRegionsNames(player.getUniqueId()).isEmpty()){
@@ -63,7 +63,7 @@ public class Placeholders extends PlaceholderExpansion {
                     return Text.sanitizeString(player, config.getString(path.append(".placeholder.replacer").toString()));
                 }
             }
-            return "";
+            return Text.hexColors(config.getString("Player-no-region"));
         }
         return null;
     }

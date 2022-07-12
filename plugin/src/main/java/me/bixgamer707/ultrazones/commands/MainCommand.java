@@ -19,37 +19,34 @@ public class MainCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         File config = plugin.getFileManager().getConfig();
-        File saves = plugin.getFileManager().getSaves();
         if(sender instanceof Player){
             Player player = (Player) sender;
             if(!(args.length > 0)){
-                Text.colorizeList(player,"help-message");
+                Text.colorizeList(player,"Messages.help-message");
                 return false;
             }
             if("reload".equalsIgnoreCase(args[0])){
                 if(!(player.hasPermission("ultrazones.command.reload") || player.hasPermission("ultrazones.*"))){
-                    player.sendMessage(Text.colorize("no-permission"));
+                    player.sendMessage(Text.colorize("Messages.no-permission"));
                     return false;
                 }
                 config.reload();
-                saves.reload();
-                player.sendMessage(Text.colorize("reload-message"));
+                player.sendMessage(Text.colorize("Messages.reload-message"));
                 return true;
             }
-            Text.colorizeList(player,"help-message");
+            Text.colorizeList(player,"Messages.help-message");
             return true;
         }
         if(!(args.length > 0)){
-            Text.colorizeList(sender,"help-message");
+            Text.colorizeList(sender,"Messages.help-message");
             return false;
         }
         if("reload".equalsIgnoreCase(args[0])){
             config.reload();
-            saves.reload();
-            plugin.getLogger().info(Text.colorize("reload-message"));
+            plugin.getLogger().info(Text.colorize("Messages.reload-message"));
             return true;
         }
-        Text.colorizeList(sender,"help-message");
+        Text.colorizeList(sender,"Messages.help-message");
         return true;
     }
 }

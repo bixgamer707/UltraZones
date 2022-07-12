@@ -17,15 +17,13 @@ public class FileManager {
         config = new File(plugin,"config.yml");
         if(plugin.getServer().getPluginManager().getPlugin("UltraBreeds") != null){
             breeds = new File(plugin, "breeds.yml");
+            plugin.getLogger().info(
+                    Text.hexColors("&aUltraBreeds &6has been hooked")
+            );
         }
-        saves = new File(plugin, "saves.yml");
         plugin.getLogger().info(
                 Text.hexColors("&aFiles registered...")
         );
-    }
-
-    public File getSaves() {
-        return saves;
     }
 
     public File getConfig() {

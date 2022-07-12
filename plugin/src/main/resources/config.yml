@@ -39,8 +39,8 @@ Zones:
       messages:
         action-bar:
           enable: true
-          message: "&aYou has been join in the spawn"
-        message: "&aYou has been join in the spawn"
+          message: "&6You has been exit in the spawn"
+        message: "&6You has been exit in the spawn"
 
 #MESSAGES IN ENGLISH
 Messages:
