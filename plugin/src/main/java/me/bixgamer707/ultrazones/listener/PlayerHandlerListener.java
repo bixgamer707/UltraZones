@@ -18,6 +18,6 @@ public class PlayerHandlerListener implements Listener {
         if(user!=null)return;
 
         plugin.getUsersManager().addUser(event.getUniqueId(),new User(event.getUniqueId(),
-                new StringBuilder(event.getName())));
+                event.getName()));
     }
 }
