@@ -1,26 +1,28 @@
 package me.bixgamer707.ultrazones.manager;
 
-import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.user.User;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class UsersManager {
-    private UltraZones plugin;
-    private final Map<UUID, User> userMap;
-    public UsersManager(UltraZones plugin){
-        this.plugin = plugin;
-        this.userMap = new HashMap<>();
+    private final ConcurrentMap<UUID, User> userMap;
+    public UsersManager(){
+        this.userMap = new ConcurrentHashMap<>();
     }
 
-    public void addUser(UUID uuid,User user){
-        userMap.put(uuid,user);
-    }
+    public CompletableFuture<User> getUserByUuid(UUID uuid, String name){
+        return CompletableFuture.supplyAsync(() -> {
+            User user = userMap.get(uuid);
+            if(user == null){
+                user = new User(uuid, name);
+            }
 
-    public User getUserByUuid(UUID uuid){
-        return userMap.get(uuid);
+            userMap.put(uuid,user);
+            return user;
+        });
     }
 
 }
