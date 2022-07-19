@@ -6,19 +6,21 @@ import me.bixgamer707.ultrazones.wgevents.events.RegionsEnteredEvent;
 import me.bixgamer707.ultrazones.wgevents.events.RegionsLeftEvent;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class UserData {
 
     protected UUID uuid;
-    protected ArrayList<String> zonesJoined;
+    protected List<String> zonesJoined;
     protected String name;
-    protected ArrayList<String> zonesExit;
+    protected List<String> zonesExit;
 
     public UserData(UUID uuid, String name){
         this.uuid = uuid;
         this.name = name;
         this.zonesJoined = new ArrayList<>();
+        this.zonesExit = new ArrayList<>();
     }
     public abstract void onRegionJoin(RegionEnteredEvent event);
 
@@ -29,7 +31,7 @@ public abstract class UserData {
     public abstract void onRegionsLeft(RegionsLeftEvent event);
 
 
-    public ArrayList<String> getZonesJoined() {
+    public List<String> getZonesJoined() {
         return zonesJoined;
     }
 
@@ -39,7 +41,7 @@ public abstract class UserData {
         }
     }
 
-    public ArrayList<String> getZonesExit() {
+    public List<String> getZonesExit() {
         return zonesExit;
     }
 
@@ -47,6 +49,14 @@ public abstract class UserData {
         if(!zonesExit.contains(id)){
             zonesExit.add(id);
         }
+    }
+
+    public void setZonesExit(List<String> zonesExit) {
+        this.zonesExit = zonesExit;
+    }
+
+    public void setZonesJoined(List<String> zonesJoined) {
+        this.zonesJoined = zonesJoined;
     }
 
     protected abstract void loadData();
