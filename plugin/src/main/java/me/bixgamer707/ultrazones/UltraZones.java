@@ -2,6 +2,7 @@ package me.bixgamer707.ultrazones;
 
 import com.sk89q.worldguard.WorldGuard;
 import me.bixgamer707.ultrazones.manager.FileManager;
+import me.bixgamer707.ultrazones.manager.Metrics;
 import me.bixgamer707.ultrazones.manager.UsersManager;
 import me.bixgamer707.ultrazones.register.RegisterPlugin;
 import me.bixgamer707.ultrazones.utils.Text;
@@ -21,6 +22,7 @@ public class UltraZones extends JavaPlugin {
     @Override
     public void onEnable(){
         // CREATING INSTANCES
+        long currentMs = System.currentTimeMillis();
         instance = this;
         fileManager = new FileManager(this);
         new WorldGuardChecks(WorldGuard.getInstance().getPlatform().getRegionContainer());
@@ -44,6 +46,8 @@ public class UltraZones extends JavaPlugin {
         }
         registerPlugin.registerAll();
         fileManager.registerFiles();
+        new Metrics(this, 15809);
+        getLogger().info(Text.hexColors("&fLOAD PLUGIN IN: &a"+ (System.currentTimeMillis() - currentMs) + "ms"));
     }
 
     @Override
