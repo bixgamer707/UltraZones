@@ -11,10 +11,11 @@ public class FileManager {
         this.plugin = plugin;
     }
 
-    private File config,saves,breeds;
+    private File config,breeds,saves;
     
     public void registerFiles() {
         config = new File(plugin,"config.yml");
+        saves = new File(plugin, "saves.yml");
         if(plugin.getServer().getPluginManager().getPlugin("UltraBreeds") != null){
             breeds = new File(plugin, "breeds.yml");
             plugin.getLogger().info(
@@ -24,6 +25,10 @@ public class FileManager {
         plugin.getLogger().info(
                 Text.hexColors("&aFiles registered...")
         );
+    }
+
+    public File getSaves() {
+        return saves;
     }
 
     public File getConfig() {
