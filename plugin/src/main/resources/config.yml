@@ -8,6 +8,19 @@ Zones:
       enable: true
       replacer: "&8&l| &aSPAWN &8&L|"
     join:
+      first-join:
+        execute-commands:
+          - "msg %player% &7You have entered this area for the first time!"
+        sounds:
+          to-server:
+          - BLOCK_NOTE_BLOCK_PLING:10:1
+          player:
+          - BLOCK_NOTE_BLOCK_PLING:10:2
+        messages:
+          action-bar:
+            enable: true
+            message: "&aYou has been join in the spawn"
+          message: "&aYou has been join in the spawn"
       execute-commands:
         - "broadcast &8> &a+ &8< &7%player%"
       sounds:
