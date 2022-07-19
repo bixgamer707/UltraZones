@@ -11,6 +11,8 @@ import me.bixgamer707.ultrazones.wgevents.events.RegionsLeftEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class User extends UserData{
@@ -297,12 +299,23 @@ public class User extends UserData{
     }
 
     @Override
-    protected void loadData() {
+    public void loadData() {
+        File saves = UltraZones.getInstance().getFileManager().getSaves();
+        if(!saves.contains("Saves."+uuid)){
+            return;
+        }
 
+        List<String> zoneJoined = saves.getStringList("Saves." + uuid + ".zonesJoined");
+        List<String> zoneExit = saves.getStringList("Saves." + uuid + ".zonesExit");
+        setZonesJoined(zoneJoined);
+        setZonesExit(zoneExit);
     }
 
     @Override
-    protected void saveData() {
-
+    public void saveData() {
+        File saves = UltraZones.getInstance().getFileManager().getSaves();
+        saves.set("Saves." + uuid + ".zonesJoined", zonesJoined);
+        saves.set("Saves." + uuid + ".zonesExit", zonesExit);
+        saves.save();
     }
 }
