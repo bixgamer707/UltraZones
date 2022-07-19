@@ -8,6 +8,8 @@ import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
+import java.util.concurrent.CompletableFuture;
+
 public class Placeholders extends PlaceholderExpansion {
     private final UltraZones plugin;
     public Placeholders(UltraZones plugin) {
@@ -68,11 +70,14 @@ public class Placeholders extends PlaceholderExpansion {
         }
         if(identifier.equals("total_zones_player")) {
             File config = plugin.getFileManager().getConfig();
-            User user = plugin.getUsersManager().getUserByUuid(player.getUniqueId());
-            if(user == null)return "Data player has no registered";
+            CompletableFuture<User> user = plugin.getUsersManager().getUserByUuid(
+                    player.getUniqueId(),
+                    player.getName()
+            );
+
             if(!config.contains("Zones"))return "Nothing zones registered";
 
-            for(String key : user.getZonesJoined()){
+            for(String key : user.join().getZonesJoined()){
                 return key;
             }
             return "ERROR";

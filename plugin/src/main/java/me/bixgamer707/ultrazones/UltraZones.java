@@ -32,7 +32,7 @@ public class UltraZones extends JavaPlugin {
             useOldMethods = true;
         }
         registerPlugin = new RegisterPlugin(this);
-        usersManager = new UsersManager(this);
+        usersManager = new UsersManager();
 
         //REGISTER FUNCTIONS
         if (!WorldGuard.getInstance().getPlatform().getSessionManager().registerHandler(Entry.factory, null)) {
