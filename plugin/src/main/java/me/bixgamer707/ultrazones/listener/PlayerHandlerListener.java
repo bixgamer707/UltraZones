@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 public class PlayerHandlerListener implements Listener {
     private final UltraZones plugin;
     public PlayerHandlerListener(UltraZones plugin){
@@ -14,10 +16,11 @@ public class PlayerHandlerListener implements Listener {
 
     @EventHandler
     public void onAsyncPreJoin(AsyncPlayerPreLoginEvent event){
-        User user = plugin.getUsersManager().getUserByUuid(event.getUniqueId());
-        if(user!=null)return;
+        CompletableFuture<User> user = plugin.getUsersManager().getUserByUuid(
+                event.getUniqueId(),
+                event.getName()
+        );
 
-        plugin.getUsersManager().addUser(event.getUniqueId(),new User(event.getUniqueId(),
-                event.getName()));
+        user.thenAcceptAsync(User::loadData);
     }
 }
