@@ -29,21 +29,10 @@ public class User extends UserData{
         String zone = event.getRegionName();
         if(!config.contains("Zones."+zone+".join"))return;
 
-        if(config.contains("Zones."+zone+".join.permission-requirement")){
-            if(config.contains("Zones."+zone+".join.permission-requirement.value") &&
-                    config.getBoolean("Zones."+zone+".join.permission-requirement.enable")){
-                if(!event.getPlayer().hasPermission(config.getString("Zones."+zone+".join.permission-requirement.value"))){
-                    event.setCancelled(true);
-                    event.getPlayer().sendMessage(Text.hexColors(config.getString("Zones."+zone+".join.permission-requirement.message-no-available")));
-                    return;
-                }
-            }
-        }
-
         if(!getZonesJoined().contains(zone)){
-            addZone(zone);
             if(!config.contains("Zones."+zone+".join.first-join"))return;
 
+            addZone(zone);
             if(config.contains("Zones."+zone+".join.first-join.execute-commands")){
                 for(String cmd : config.getStringList("Zones."+zone+".join.first-join.execute-commands")){
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",getName().toString()));
@@ -97,6 +86,19 @@ public class User extends UserData{
             }
             return;
         }
+
+        if(config.contains("Zones."+zone+".join.permission-requirement")){
+            if(config.contains("Zones."+zone+".join.permission-requirement.value") &&
+                    config.getBoolean("Zones."+zone+".join.permission-requirement.enable")){
+                if(!event.getPlayer().hasPermission(config.getString("Zones."+zone+".join.permission-requirement.value"))){
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage(Text.hexColors(config.getString("Zones."+zone+".join.permission-requirement.message-no-available")));
+                    return;
+                }
+            }
+        }
+
+
 
         if(config.contains("Zones."+zone+".join.execute-commands")){
             for(String cmd : config.getStringList("Zones."+zone+".join.execute-commands")){
@@ -178,6 +180,64 @@ public class User extends UserData{
             }
         }
 
+        if(!getZonesExit().contains(zone)){
+            if(!config.contains("Zones."+zone+".left.first-left"))return;
+
+            addZoneExit(zone);
+            if(config.contains("Zones."+zone+".left.first-left.execute-commands")){
+                for(String cmd : config.getStringList("Zones."+zone+".left.first-left.execute-commands")){
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",getName().toString()));
+                }
+            }
+            if(config.contains("Zones."+zone+".left.first-left.sounds")){
+                if(config.contains("Zones."+zone+".left.first-left.sounds.to-server")){
+                    for(String sounds : config.getStringList("Zones."+zone+".left.first-left.sounds.to-server")){
+                        String[] split = sounds.split(":");
+                        try {
+                            Sound sound = Sound.valueOf(split[0]);
+                            int vol = Integer.parseInt(split[1]);
+                            float pitch = Float.parseFloat(split[2]);
+
+                            Bukkit.getOnlinePlayers().forEach(player ->
+                                    player.playSound(player.getLocation(),sound,vol,pitch)
+                            );
+                        }catch (IllegalArgumentException e){
+                            Text.sendMsgConsole(
+                                    Color.RED+"THE SOUND "+ split[0] + "IS INCOMPATIBLE."
+                            );
+                        }
+                    }
+                }
+                if(config.contains("Zones."+zone+".left.first-left.sounds.player")){
+                    for(String sounds : config.getStringList("Zones."+zone+".left.first-left.sounds.player")){
+                        String[] split = sounds.split(":");
+                        try {
+                            Sound sound = Sound.valueOf(split[0]);
+                            int vol = Integer.parseInt(split[1]);
+                            float pitch = Float.parseFloat(split[2]);
+
+                            event.getPlayer().playSound(event.getPlayer().getLocation(),sound,vol,pitch);
+                        }catch (IllegalArgumentException e){
+                            Text.sendMsgConsole(
+                                    Color.RED+"SOUND "+ split[0] + "IS INCOMPATIBLE."
+                            );
+                        }
+                    }
+                }
+            }
+            if(config.contains("Zones."+zone+".left.first-left.messages")){
+                if(config.contains("Zones."+zone+".left.first-left.messages.action-bar") &&
+                        config.getBoolean("Zones."+zone+".left.first-left.messages.action-bar.enable")){
+                    Text.sendActionBar(event.getPlayer(), config.getString("Zones."+zone+".left.first-left.messages.action-bar.message"));
+                }
+                if(config.contains("Zones."+zone+".left.first-left.messages.message")){
+                    event.getPlayer().sendMessage(Text.sanitizeString(event.getPlayer(),
+                            config.getString("Zones."+zone+".left.first-left.messages.message")));
+                }
+            }
+            return;
+        }
+
         if(config.contains("Zones."+zone+".left.execute-commands")){
             for(String cmd : config.getStringList("Zones."+zone+".left.execute-commands")){
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",getName().toString()));
@@ -233,6 +293,16 @@ public class User extends UserData{
 
     @Override
     public void onRegionsLeft(RegionsLeftEvent event) {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void saveData() {
 
     }
 }
