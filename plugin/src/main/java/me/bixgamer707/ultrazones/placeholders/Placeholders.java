@@ -2,6 +2,7 @@ package me.bixgamer707.ultrazones.placeholders;
 
 import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.file.File;
+import me.bixgamer707.ultrazones.user.User;
 import me.bixgamer707.ultrazones.utils.Text;
 import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -47,23 +48,34 @@ public class Placeholders extends PlaceholderExpansion {
             File config = plugin.getFileManager().getConfig();
             if(!config.contains("Zones"))return "Nothing zones registered";
 
-            for(String idRegion : WorldGuardChecks.getRegionsNames(player.getUniqueId())){
-                if(WorldGuardChecks.getRegionsNames(player.getUniqueId()).isEmpty()){
-                    return Text.hexColors(config.getString("Player-no-region"));
-                }
-                for(String key : config.getConfigurationSection("Zones").
-                        getKeys(false)){
-                    StringBuilder path = new StringBuilder("Zones.").
-                            append(key);
-                    if(!config.getBoolean(path.append(".placeholder.enable")
-                            .toString()))continue;
+            for(String key : config.getConfigurationSection("Zones").getKeys(false)){
+                if(!config.getBoolean("Zones."+key+".placeholder.enable")) continue;
 
-                    if(!idRegion.equals(key))continue;
+                if(!WorldGuardChecks.isPlayerInAnyRegion(player.getUniqueId(),key))continue;
 
-                    return Text.sanitizeString(player, config.getString(path.append(".placeholder.replacer").toString()));
-                }
+                return Text.sanitizeString(player, config.getString("Zones."+key+".placeholder.replacer"));
             }
             return Text.hexColors(config.getString("Player-no-region"));
+        }
+        if(identifier.equals("total_zones")) {
+            File config = plugin.getFileManager().getConfig();
+            if(!config.contains("Zones"))return "Nothing zones registered";
+
+            for(String key : config.getConfigurationSection("Zones").getKeys(false)){
+                return key;
+            }
+            return "ERROR";
+        }
+        if(identifier.equals("total_zones_player")) {
+            File config = plugin.getFileManager().getConfig();
+            User user = plugin.getUsersManager().getUserByUuid(player.getUniqueId());
+            if(user == null)return "Data player has no registered";
+            if(!config.contains("Zones"))return "Nothing zones registered";
+
+            for(String key : user.getZonesJoined()){
+                return key;
+            }
+            return "ERROR";
         }
         return null;
     }
