@@ -3,6 +3,7 @@ package me.bixgamer707.ultrazones;
 import com.sk89q.worldguard.WorldGuard;
 import me.bixgamer707.ultrazones.manager.FileManager;
 import me.bixgamer707.ultrazones.manager.Metrics;
+import me.bixgamer707.ultrazones.manager.UpdateChecker;
 import me.bixgamer707.ultrazones.manager.UsersManager;
 import me.bixgamer707.ultrazones.register.RegisterPlugin;
 import me.bixgamer707.ultrazones.utils.Text;
@@ -47,6 +48,15 @@ public class UltraZones extends JavaPlugin {
         registerPlugin.registerAll();
         fileManager.registerFiles();
         new Metrics(this, 15809);
+        new UpdateChecker(this, 103295).getVersion(version -> {
+            if (this.getDescription().getVersion().equals(version)) {
+                getLogger().info(Text.hexColors("&aThere is not a new update available."));
+            } else {
+                getLogger().info(Text.hexColors("&6There is a new update available."));
+                getLogger().info(Text.hexColors("&9You can download in: "));
+                getLogger().info(Text.hexColors("&bhttps://www.spigotmc.org/resources/ultrazones.103295/"));
+            }
+        });
         getLogger().info(Text.hexColors("&fLOAD PLUGIN IN: &a"+ (System.currentTimeMillis() - currentMs) + "ms"));
     }
 
