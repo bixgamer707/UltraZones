@@ -4,7 +4,6 @@ import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.file.File;
 import me.bixgamer707.ultrazones.user.User;
 import me.bixgamer707.ultrazones.utils.Text;
-import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
@@ -47,17 +46,23 @@ public class Placeholders extends PlaceholderExpansion {
         }
 
         if (identifier.equals("zone_player")) {
+            CompletableFuture<User> user = plugin.getUsersManager().getUserByUuid(
+                    player.getUniqueId(),
+                    player.getName()
+            );
             File config = plugin.getFileManager().getConfig();
-            if(!config.contains("Zones"))return "Nothing zones registered";
+            User userData = user.join();
 
-            for(String key : config.getConfigurationSection("Zones").getKeys(false)){
-                if(!config.getBoolean("Zones."+key+".placeholder.enable")) continue;
-
-                if(!WorldGuardChecks.isPlayerInAnyRegion(player.getUniqueId(),key))continue;
-
-                return Text.sanitizeString(player, config.getString("Zones."+key+".placeholder.replacer"));
+            if(userData.getCurrentZone().equalsIgnoreCase("none")){
+                return Text.sanitizeString(player, config.getString("Player-no-region"));
             }
-            return Text.hexColors(config.getString("Player-no-region"));
+            if(config.contains("Zones."+userData.getCurrentZone())){
+                if(!config.getBoolean("Zones"+userData.getCurrentZone()+".placeholder.enable")){
+                    return "";
+                }
+                return Text.sanitizeString(player, config.getString("Zones."+userData.getCurrentZone()+".placeholder.replacer"));
+            }
+            return userData.getCurrentZone();
         }
         if(identifier.equals("total_zones")) {
             File config = plugin.getFileManager().getConfig();
@@ -69,13 +74,10 @@ public class Placeholders extends PlaceholderExpansion {
             return "ERROR";
         }
         if(identifier.equals("total_zones_player")) {
-            File config = plugin.getFileManager().getConfig();
             CompletableFuture<User> user = plugin.getUsersManager().getUserByUuid(
                     player.getUniqueId(),
                     player.getName()
             );
-
-            if(!config.contains("Zones"))return "Nothing zones registered";
 
             for(String key : user.join().getZonesJoined()){
                 return key;
