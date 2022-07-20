@@ -50,19 +50,9 @@ public class Placeholders extends PlaceholderExpansion {
                     player.getUniqueId(),
                     player.getName()
             );
-            File config = plugin.getFileManager().getConfig();
             User userData = user.join();
 
-            if(userData.getCurrentZone().equalsIgnoreCase("none")){
-                return Text.sanitizeString(player, config.getString("Player-no-region"));
-            }
-            if(config.contains("Zones."+userData.getCurrentZone())){
-                if(!config.getBoolean("Zones"+userData.getCurrentZone()+".placeholder.enable")){
-                    return "";
-                }
-                return Text.sanitizeString(player, config.getString("Zones."+userData.getCurrentZone()+".placeholder.replacer"));
-            }
-            return userData.getCurrentZone();
+            return Text.hexColors(userData.getCurrentZone());
         }
         if(identifier.equals("total_zones")) {
             File config = plugin.getFileManager().getConfig();
