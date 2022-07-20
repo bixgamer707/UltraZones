@@ -7,6 +7,8 @@ import me.bixgamer707.ultrazones.user.User;
 import me.bixgamer707.ultrazones.utils.Text;
 import me.bixgamer707.ultrazones.wgevents.Entry;
 import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class WorldGuardManager implements LoaderManager {
     private final UltraZones plugin;
@@ -18,11 +20,11 @@ public class WorldGuardManager implements LoaderManager {
     }
 
     public boolean startWG(){
-        new WorldGuardChecks(
+        this.worldGuardChecks = new WorldGuardChecks(
                 WorldGuard.getInstance().getPlatform().getRegionContainer()
         );
         try{
-            Class.forName("com.sk89q.worldguard.session.handler");
+            Class.forName("com.sk89q.worldguard.session.handler.Handler");
             if (!WorldGuard.getInstance().getPlatform().getSessionManager().registerHandler(Entry.factory, null)) {
                 Text.sendMsgConsole(
                         "&cCould not register the entry handler!",
@@ -48,18 +50,28 @@ public class WorldGuardManager implements LoaderManager {
     public void startZones(){
         File config = plugin.getFileManager().getConfig();
         taskID = (plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () ->{
-            if(!config.contains("Zones")) return;
-            for(User user : plugin.getUsersManager().userMap.values()){
-                for(String zone : config.getConfigurationSection("Zones").getKeys(false)){
-                    if(worldGuardChecks.isPlayerInAnyRegion(user.getUniqueId(), zone)){
-                        user.setCurrentZone(zone);
-                        break;
-                    }
-                }
-
+            if(!config.contains("Zones")) {
+                return;
             }
 
-        },0L,30L).getTaskId());
+            for(Player player : Bukkit.getOnlinePlayers()){
+                 User user = plugin.getUsersManager().getUserByUuid(
+                        player.getUniqueId(),
+                        player.getName()
+                ).join();
+
+                user.setCurrentZone(config.getString("Player-no-region"));
+                for(String regions : getWorldGuardChecks().getRegionsNames(player.getUniqueId())) {
+                    if (config.contains("Zones." + regions)) {
+                        if (!config.getBoolean("Zones." + regions + ".placeholder.enable")) {
+                            continue;
+                        }
+                        user.setCurrentZone(config.getString("Zones." + regions + ".placeholder.replacer"));
+
+                    }
+                }
+            }
+        },0L,20L).getTaskId());
     }
 
     @Override
@@ -70,7 +82,6 @@ public class WorldGuardManager implements LoaderManager {
 
     @Override
     public void stop() {
-        worldGuardChecks = null;
         plugin.getServer().getScheduler().cancelTask(taskID);
     }
 }
