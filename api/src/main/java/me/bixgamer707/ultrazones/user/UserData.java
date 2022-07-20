@@ -15,12 +15,14 @@ public abstract class UserData {
     protected List<String> zonesJoined;
     protected String name;
     protected List<String> zonesExit;
+    protected String currentZone;
 
     public UserData(UUID uuid, String name){
         this.uuid = uuid;
         this.name = name;
         this.zonesJoined = new ArrayList<>();
         this.zonesExit = new ArrayList<>();
+        this.currentZone = "none";
     }
     public abstract void onRegionJoin(RegionEnteredEvent event);
 
@@ -71,4 +73,11 @@ public abstract class UserData {
         return name;
     }
 
+    public String getCurrentZone() {
+        return currentZone;
+    }
+
+    public void setCurrentZone(String currentZone) {
+        this.currentZone = currentZone;
+    }
 }
