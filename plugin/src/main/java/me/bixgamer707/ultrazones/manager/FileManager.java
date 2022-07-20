@@ -4,7 +4,7 @@ import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.file.File;
 import me.bixgamer707.ultrazones.utils.Text;
 
-public class FileManager {
+public class FileManager implements LoaderManager{
 
     private final UltraZones plugin;
     public FileManager(UltraZones plugin) {
@@ -12,8 +12,9 @@ public class FileManager {
     }
 
     private File config,breeds,saves;
-    
-    public void registerFiles() {
+
+    @Override
+    public void start() {
         config = new File(plugin,"config.yml");
         saves = new File(plugin, "saves.yml");
         if(plugin.getServer().getPluginManager().getPlugin("UltraBreeds") != null){
@@ -25,6 +26,12 @@ public class FileManager {
         plugin.getLogger().info(
                 Text.hexColors("&aFiles registered...")
         );
+    }
+
+    @Override
+    public void stop() {
+        config.save();
+        saves.save();
     }
 
     public File getSaves() {
