@@ -50,7 +50,7 @@ public class Text {
 
     public static void sendMsgConsole(String... msg){
         for(String txt : msg){
-            UltraZones.getInstance().getLogger().info(txt);
+            UltraZones.getInstance().getLogger().info(hexColors(txt));
         }
     }
 
@@ -89,14 +89,19 @@ public class Text {
         if(Utils.versionEquals("1.9","1.10","1.11","1.12","1.13","1.14","1.15","1.16","1.17","1.18","1.19")){
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(hexColors(message)));
         }else{
-            String nmsver = UltraZones.getInstance().getNmsVer();
+            boolean useOldMethods = false;
+            String nmsver = Bukkit.getServer().getClass().getPackage().getName();
+            nmsver = nmsver.substring(nmsver.lastIndexOf(".") + 1);
+            if (nmsver.equalsIgnoreCase("v1_8_R1") || nmsver.startsWith("v1_7_")) {
+                useOldMethods = true;
+            }
             try {
                 Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
                 Object craftPlayer = craftPlayerClass.cast(player);
                 Object packet;
                 Class<?> packetPlayOutChatClass = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
                 Class<?> packetClass = Class.forName("net.minecraft.server." + nmsver + ".Packet");
-                if (UltraZones.getInstance().isUseOldMethods()) {
+                if (useOldMethods) {
                     Class<?> chatSerializerClass = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
                     Class<?> iChatBaseComponentClass = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
                     Method m3 = chatSerializerClass.getDeclaredMethod("a", String.class);
