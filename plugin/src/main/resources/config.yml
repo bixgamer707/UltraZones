@@ -38,6 +38,19 @@ Zones:
         value: "zone.spawn.join"
         message-no-available: "%prefix% &cYou don't join a this zone."
     left:
+      first-left:
+        execute-commands:
+          - "msg %player% &7You have leaving this area for the first time!"
+        sounds:
+          to-server:
+            - BLOCK_NOTE_BLOCK_PLING:10:1
+          player:
+            - BLOCK_NOTE_BLOCK_PLING:10:2
+          messages:
+            action-bar:
+              enable: true
+              message: "&6You has been exit in the spawn"
+            message: "&6You has been exit in the spawn"
       permission-requirement:
         enable: false
         value: "zone.spawn.exit"
