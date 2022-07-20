@@ -4,6 +4,7 @@ import me.bixgamer707.ultrazones.UltraZones;
 import me.bixgamer707.ultrazones.commands.MainCommand;
 import me.bixgamer707.ultrazones.listener.UserHandler;
 import me.bixgamer707.ultrazones.listener.PlayerHandlerListener;
+import me.bixgamer707.ultrazones.manager.LoaderManager;
 import me.bixgamer707.ultrazones.placeholders.Placeholders;
 import me.bixgamer707.ultrazones.tabcomplete.OldPaperTabCompleter;
 import me.bixgamer707.ultrazones.tabcomplete.PaperTabCompleter;
@@ -11,7 +12,7 @@ import me.bixgamer707.ultrazones.tabcomplete.SpigotTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-public class RegisterPlugin {
+public class RegisterPlugin implements LoaderManager {
     private final UltraZones plugin;
     public RegisterPlugin(UltraZones plugin){
         this.plugin = plugin;
@@ -50,19 +51,25 @@ public class RegisterPlugin {
         }
     }
 
-    public void registerAll(){
+    public void registerPlaceholders(){
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new Placeholders(plugin).register();
+        }
+    }
+
+    @Override
+    public void start() {
         registerCommand();
         registerListener(
-            new UserHandler(plugin),
+                new UserHandler(plugin),
                 new PlayerHandlerListener(plugin)
         );
         registerTabCompletion();
         registerPlaceholders();
     }
 
-    public void registerPlaceholders(){
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
-            new Placeholders(plugin).register();
-        }
+    @Override
+    public void stop() {
+
     }
 }
