@@ -18,15 +18,14 @@ public class UserHandler implements Listener {
     }
 
     @EventHandler
-    public void onLeftRegion(RegionLeftEvent event){
-        if(event.getPlayer() == null)return;
+    public void onLeftRegion(RegionLeftEvent event) {
+        if (event.getPlayer() == null) return;
 
         CompletableFuture<User> user = plugin.getUsersManager().getUserByUuid(
                 event.getPlayer().getUniqueId(),
                 event.getPlayer().getName()
         );
-
-        user.thenAcceptAsync(userData -> userData.onRegionLeft(event));
+        user.join().onRegionLeft(event);
     }
 
     @EventHandler
@@ -38,7 +37,7 @@ public class UserHandler implements Listener {
                 event.getPlayer().getName()
         );
 
-        user.thenAcceptAsync(userData -> userData.onRegionsLeft(event));
+        user.join().onRegionsLeft(event);
     }
 
     @EventHandler
@@ -50,7 +49,7 @@ public class UserHandler implements Listener {
                 event.getPlayer().getName()
         );
 
-        user.thenAcceptAsync(userData -> userData.onRegionJoin(event));
+        user.join().onRegionJoin(event);
     }
 
     @EventHandler
@@ -62,6 +61,6 @@ public class UserHandler implements Listener {
                 event.getPlayer().getName()
         );
 
-        user.thenAcceptAsync(userData -> userData.onRegionsJoin(event));
+        user.join().onRegionsJoin(event);
     }
 }
