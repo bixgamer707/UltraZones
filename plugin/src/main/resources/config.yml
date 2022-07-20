@@ -1,41 +1,71 @@
 Prefix: "&9Ultra&bZones &8&l| "
 
-Player-no-region: "&c&lWORLD"
+Player-no-region: "&4☠ &c&lWORLD &4☠"
 
 Zones:
   spawn:
-    placerholder:
+    #This part of the configuration can be activated/deactivated.
+    placeholder:
+      #If you define true, the placeholder seen with %ultrazones_zone_player% will be active.
       enable: true
+      #If the player is in spawn, it will show this with the variable %ultrazones_zone_player%.
       replacer: "&8&l| &aSPAWN &8&L|"
     join:
+      #This part of the configuration is only called when a player enters a region for the first time.
       first-join:
+        #When the player enters run the following commands
+        #remember that you can use %player% to be replaced by the name of the player who entered the region
+        #You can also delete the execute-commands with the list so that nothing happens.
         execute-commands:
           - "msg %player% &7You have entered this area for the first time!"
+        #You can remove the sounds so that it does not play any sound when the player enters
         sounds:
+          #The "to-server" is so that when the player enters a region, in this case spawn, it plays a sound to the whole server.
           to-server:
           - BLOCK_NOTE_BLOCK_PLING:10:1
+          #The "player" is so that when the player enters a region, in this case spawn, it will play a sound to the player.
           player:
           - BLOCK_NOTE_BLOCK_PLING:10:2
+        #You can delete this so that it does not send any message when the player enters a region, in this case spawn.
         messages:
+          #The "action-bar" part is the message above the player's hotbar.
           action-bar:
+            #Can be disabled or enabled using false to disable and true to enable.
             enable: true
+            #The "message" is what will be shown to the player in the action bar.
             message: "&aYou has been join in the spawn"
+          #The "message" outside the action bar, is what is sent to the player via chat
           message: "&aYou has been join in the spawn"
+      #When the player enters run the following commands
+      #remember that you can use %player% to be replaced by the name of the player who entered the region
+      #You can also delete the execute-commands with the list so that nothing happens.
       execute-commands:
         - "broadcast &8> &a+ &8< &7%player%"
+      #You can remove the sounds so that it does not play any sound when the player enters
       sounds:
+        #The "to-server" is so that when the player enters a region, in this case spawn, it plays a sound to the whole server.
         to-server:
           - BLOCK_NOTE_BLOCK_PLING:10:2
+        #The "player" is so that when the player enters a region, in this case spawn, it will play a sound to the player.
         player:
           - BLOCK_NOTE_BLOCK_PLING:10:0.5
+      #You can delete this so that it does not send any message when the player enters a region, in this case spawn.
       messages:
+        #The "action-bar" part is the message above the player's hotbar.
         action-bar:
+          #Can be disabled or enabled using false to disable and true to enable.
           enable: true
+          #The "message" is what will be shown to the player in the action bar.
           message: "&aYou has been join in the spawn"
+        #The "message" outside the action bar, is what is sent to the player via chat
         message: "&aYou has been join in the spawn"
+      #The permission-requirement is a permission that the player will need to enter a region.
       permission-requirement:
+        #It can be activated or deactivated, to activate it is with true and to deactivate it is with false.
         enable: false
+        #The "value" is the permission required by the player.
         value: "zone.spawn.join"
+        #The "message-no-available" is the message that is sent to the player when he does not have permission to enter the zone and is sent via chat.
         message-no-available: "%prefix% &cYou don't join a this zone."
     left:
       first-left:
