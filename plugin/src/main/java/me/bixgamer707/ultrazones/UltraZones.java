@@ -1,14 +1,8 @@
 package me.bixgamer707.ultrazones;
 
-import com.sk89q.worldguard.WorldGuard;
-import me.bixgamer707.ultrazones.manager.FileManager;
-import me.bixgamer707.ultrazones.manager.Metrics;
-import me.bixgamer707.ultrazones.manager.UpdateChecker;
-import me.bixgamer707.ultrazones.manager.UsersManager;
+import me.bixgamer707.ultrazones.manager.*;
 import me.bixgamer707.ultrazones.register.RegisterPlugin;
 import me.bixgamer707.ultrazones.utils.Text;
-import me.bixgamer707.ultrazones.wgevents.Entry;
-import me.bixgamer707.ultrazones.wgevents.WorldGuardChecks;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,33 +14,28 @@ public class UltraZones extends JavaPlugin {
     private boolean useOldMethods = false;
     private RegisterPlugin registerPlugin;
     private UsersManager usersManager;
+    private WorldGuardManager wgManager;
     @Override
     public void onEnable(){
-        // CREATING INSTANCES
-        long currentMs = System.currentTimeMillis();
-        instance = this;
-        fileManager = new FileManager(this);
-        new WorldGuardChecks(WorldGuard.getInstance().getPlatform().getRegionContainer());
+        //REGISTER NMS VERSION
         nmsVer = Bukkit.getServer().getClass().getPackage().getName();
         nmsVer = nmsVer.substring(nmsVer.lastIndexOf(".") + 1);
         if (nmsVer.equalsIgnoreCase("v1_8_R1") || nmsVer.startsWith("v1_7_")) {
             useOldMethods = true;
         }
-        registerPlugin = new RegisterPlugin(this);
-        usersManager = new UsersManager();
+
+        // CREATING INSTANCES
+        long currentMs = System.currentTimeMillis();
+        instance = this;
+        this.fileManager = new FileManager(this);
+        this.registerPlugin = new RegisterPlugin(this);
+        this.usersManager = new UsersManager();
+        this.wgManager = new WorldGuardManager(this);
 
         //REGISTER FUNCTIONS
-        if (!WorldGuard.getInstance().getPlatform().getSessionManager().registerHandler(Entry.factory, null)) {
-            Text.sendMsgConsole(
-                    "&cCould not register the entry handler!",
-                    "&ePlease report this error. &4The plugin will now be disabled."
-            );
-
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
         registerPlugin.registerAll();
         fileManager.registerFiles();
+        wgManager.startWG();
         new Metrics(this, 15809);
         new UpdateChecker(this, 103295).getVersion(version -> {
             if (this.getDescription().getVersion().equals(version)) {
@@ -62,7 +51,9 @@ public class UltraZones extends JavaPlugin {
 
     @Override
     public void onDisable(){
+        wgManager.stop();
         instance = null;
+        wgManager = null;
         fileManager = null;
         registerPlugin = null;
         usersManager = null;
@@ -75,7 +66,7 @@ public class UltraZones extends JavaPlugin {
     }
 
     public FileManager getFileManager() {
-        return fileManager;
+        return this.fileManager;
     }
 
     public boolean isUseOldMethods() {
@@ -87,6 +78,10 @@ public class UltraZones extends JavaPlugin {
     }
 
     public UsersManager getUsersManager() {
-        return usersManager;
+        return this.usersManager;
+    }
+
+    public WorldGuardManager getWgManager() {
+        return wgManager;
     }
 }
