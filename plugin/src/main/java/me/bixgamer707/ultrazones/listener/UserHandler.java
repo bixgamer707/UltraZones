@@ -26,9 +26,7 @@ public class UserHandler implements Listener {
                 event.getPlayer().getName()
         );
 
-        user.thenAcceptAsync(userData -> {
-            userData.onRegionLeft(event);
-        });
+        user.thenAcceptAsync(userData -> userData.onRegionLeft(event));
     }
 
     @EventHandler
@@ -40,9 +38,7 @@ public class UserHandler implements Listener {
                 event.getPlayer().getName()
         );
 
-        user.thenAcceptAsync(userData -> {
-            userData.onRegionsLeft(event);
-        });
+        user.thenAcceptAsync(userData -> userData.onRegionsLeft(event));
     }
 
     @EventHandler
@@ -54,9 +50,7 @@ public class UserHandler implements Listener {
                 event.getPlayer().getName()
         );
 
-        user.thenAcceptAsync(userData -> {
-            userData.onRegionJoin(event);
-        });
+        user.thenAcceptAsync(userData -> userData.onRegionJoin(event));
     }
 
     @EventHandler
@@ -68,8 +62,6 @@ public class UserHandler implements Listener {
                 event.getPlayer().getName()
         );
 
-        user.thenAcceptAsync(userData -> {
-            userData.onRegionsJoin(event);
-        });
+        user.thenAcceptAsync(userData -> userData.onRegionsJoin(event));
     }
 }
