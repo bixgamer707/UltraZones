@@ -7,11 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class UsersManager {
+public class UsersManager implements LoaderManager{
     public ConcurrentMap<UUID, User> userMap;
-    public UsersManager(){
-        this.userMap = new ConcurrentHashMap<>();
-    }
 
     public CompletableFuture<User> getUserByUuid(UUID uuid, String name){
         return CompletableFuture.supplyAsync(() -> {
@@ -25,4 +22,13 @@ public class UsersManager {
         });
     }
 
+    @Override
+    public void start() {
+        userMap = new ConcurrentHashMap<>();
+    }
+
+    @Override
+    public void stop() {
+
+    }
 }
