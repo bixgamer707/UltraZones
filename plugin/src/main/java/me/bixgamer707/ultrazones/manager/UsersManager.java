@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class UsersManager {
-    private final ConcurrentMap<UUID, User> userMap;
+    public ConcurrentMap<UUID, User> userMap;
     public UsersManager(){
         this.userMap = new ConcurrentHashMap<>();
     }
