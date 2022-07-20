@@ -11,7 +11,6 @@ import me.bixgamer707.ultrazones.wgevents.events.RegionsLeftEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,9 +26,19 @@ public class User extends UserData{
         File config = UltraZones.getInstance().getFileManager().getConfig();
         if(!config.contains("Zones"))return;
 
-
         String zone = event.getRegionName();
         if(!config.contains("Zones."+zone+".join"))return;
+
+        if(config.contains("Zones."+zone+".join.permission-requirement")){
+            if(config.contains("Zones."+zone+".join.permission-requirement.value") &&
+                    config.getBoolean("Zones."+zone+".join.permission-requirement.enable")){
+                if(!event.getPlayer().hasPermission(config.getString("Zones."+zone+".join.permission-requirement.value"))){
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage(Text.hexColors(config.getString("Zones."+zone+".join.permission-requirement.message-no-available")));
+                    return;
+                }
+            }
+        }
 
         if(!getZonesJoined().contains(zone)){
             if(!config.contains("Zones."+zone+".join.first-join"))return;
@@ -37,7 +46,10 @@ public class User extends UserData{
             addZone(zone);
             if(config.contains("Zones."+zone+".join.first-join.execute-commands")){
                 for(String cmd : config.getStringList("Zones."+zone+".join.first-join.execute-commands")){
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",getName().toString()));
+                    Bukkit.getScheduler().runTask(UltraZones.getInstance(), () ->
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                                    cmd.replaceAll("%player%",getName()))
+                    );
                 }
             }
             if(config.contains("Zones."+zone+".join.first-join.sounds")){
@@ -89,22 +101,11 @@ public class User extends UserData{
             return;
         }
 
-        if(config.contains("Zones."+zone+".join.permission-requirement")){
-            if(config.contains("Zones."+zone+".join.permission-requirement.value") &&
-                    config.getBoolean("Zones."+zone+".join.permission-requirement.enable")){
-                if(!event.getPlayer().hasPermission(config.getString("Zones."+zone+".join.permission-requirement.value"))){
-                    event.setCancelled(true);
-                    event.getPlayer().sendMessage(Text.hexColors(config.getString("Zones."+zone+".join.permission-requirement.message-no-available")));
-                    return;
-                }
-            }
-        }
-
-
-
         if(config.contains("Zones."+zone+".join.execute-commands")){
             for(String cmd : config.getStringList("Zones."+zone+".join.execute-commands")){
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",getName().toString()));
+                Bukkit.getScheduler().runTask(UltraZones.getInstance(), () ->
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                                cmd.replaceAll("%player%",getName())));
             }
         }
         if(config.contains("Zones."+zone+".join.sounds")){
@@ -188,7 +189,10 @@ public class User extends UserData{
             addZoneExit(zone);
             if(config.contains("Zones."+zone+".left.first-left.execute-commands")){
                 for(String cmd : config.getStringList("Zones."+zone+".left.first-left.execute-commands")){
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",getName().toString()));
+                    Bukkit.getScheduler().runTask(UltraZones.getInstance(), () ->
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                                    cmd.replaceAll("%player%",getName()))
+                    );
                 }
             }
             if(config.contains("Zones."+zone+".left.first-left.sounds")){
@@ -242,7 +246,10 @@ public class User extends UserData{
 
         if(config.contains("Zones."+zone+".left.execute-commands")){
             for(String cmd : config.getStringList("Zones."+zone+".left.execute-commands")){
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("%player%",getName().toString()));
+                Bukkit.getScheduler().runTask(UltraZones.getInstance(), () ->
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                                cmd.replaceAll("%player%",getName()))
+                );
             }
         }
         if(config.contains("Zones."+zone+".left.sounds")){
